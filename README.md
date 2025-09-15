@@ -14,7 +14,7 @@ A personal project to test my ability to rebuild a game ontop of the underlying 
   <b>Drag the logo/image above to bookmarks bar. Click on the bookmark while on Mini site to run.</b>
   <br>On mobile, a <a href="https://sambender.net">shortcut</a> will have to be used to run JS on the page.
   <br><br>
-<i>Note: The intent of this project is not to circumvent any paywall or completely bypass any subscription, and should not be used as such. I already have a NYT subscribscription, though while using incognito browsers the log in doesn't save and requires a new sign in each time, this project aims to make my life a bit easier by addressing the lack of autofill issue with the NYT on incognito. Only those who have paid or are allowed access should/can use this client, no exceptions.</i>
+<i>Note: The intent of this project is not to circumvent any paywall or completely bypass any subscription, and should not be used as such. I already have a NYT subscribscription, though while using incognito browsers the log in doesn't save and requires a new sign in each time, this project aims to make my life a bit easier by addressing the lack of autofill issue with the NYT on incognito. Only those who have paid or are allowed access should/can use this client, no exceptions, and will otherwise be in violation of this softwares license.</i>
  
 </p>
 
@@ -36,7 +36,7 @@ ___
 - [ ] Auto move selected tile when typed (on dekstop)
 - [ ] Prevent more than 1 JSON fetch per session
 
-_Feel free to submit pull requests!_
+_Pull requests not permitted under CC BY-NC-ND 4.0, sorry!_
 
 ---
 
