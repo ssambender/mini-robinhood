@@ -234,7 +234,7 @@ if (board) {
 function moveToNextCell(currentRect) {
     const ariaLabel = currentRect.getAttribute("aria-label");
     const directionMatch = ariaLabel ? ariaLabel.match(/(\d+)([AD]):/) : null;
-    const direction = directionMatch ? directionMatch[2] : "A"; // default to Across
+    const direction = directionMatch ? directionMatch[2] : "A";
 
     const allCells = Array.from(document.querySelectorAll('g.xwd__cell rect.xwd__cell--cell'));
 
@@ -248,7 +248,6 @@ function moveToNextCell(currentRect) {
         }
     } else if (direction === "D") {
         const curX = parseFloat(currentRect.getAttribute("x"));
-        const curY = parseFloat(currentRect.getAttribute("y"));
 
         const colCells = allCells
             .filter(cell => parseFloat(cell.getAttribute("x")) === curX)
@@ -279,23 +278,35 @@ function selectCell(cell) {
 document.addEventListener('keydown', (event) => {
     const key = event.key.toUpperCase();
     const isLetter = /^[A-Z]$/.test(key);
-    if (!isLetter) return;
 
-    const selectedCellRect = document.querySelector('rect.xwd__cell--selected');
+    if (isLetter) {
+        const selectedCellRect = document.querySelector('rect.xwd__cell--selected');
 
-    if (selectedCellRect) {
-        const cellGroup = selectedCellRect.closest('g.xwd__cell');
-        const letterTextElement = cellGroup.querySelector('text[data-testid="cell-text"]:last-of-type');
+        if (selectedCellRect) {
+            const cellGroup = selectedCellRect.closest('g.xwd__cell');
+            const letterTextElement = cellGroup.querySelector('text[data-testid="cell-text"]:last-of-type');
 
-        if (letterTextElement) {
-            const hiddenText = letterTextElement.querySelector('.xwd__cell--hidden');
-            if (hiddenText) hiddenText.textContent = key;
+            if (letterTextElement) {
+                const hiddenText = letterTextElement.querySelector('.xwd__cell--hidden');
+                if (hiddenText) hiddenText.textContent = key;
 
-            letterTextElement.innerHTML = `<text class="xwd__cell--hidden" aria-live="polite">${key}</text>${key}`;
+                letterTextElement.innerHTML = `<text class="xwd__cell--hidden" aria-live="polite">${key}</text>${key}`;
 
-            areAllSquaresFilled();
+                areAllSquaresFilled();
+                moveToNextCell(selectedCellRect);
+            }
+        }
+        return;
+    }
 
-            moveToNextCell(selectedCellRect);
+    if (event.key === "Tab") {
+        event.preventDefault();
+        const selectedCellRect = document.querySelector('rect.xwd__cell--selected');
+        if (selectedCellRect) {
+            const cellGroup = selectedCellRect.closest('g.xwd__cell');
+            if (cellGroup) {
+                cellGroup.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            }
         }
     }
 });
