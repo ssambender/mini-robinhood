@@ -9,8 +9,7 @@
 <p align="center">
 A personal project to test my ability to rebuild a game ontop of the underlying existing framework. 
   <br><br>
-  <b>Drag the logo/image above to bookmarks bar. Click on the bookmark while on Mini site to run.</b>
-  <br>On mobile, a <a href="https://sambender.net">shortcut</a> will have to be used to run JS on the page.
+  <a href="https://ssambender.github.io/mini-robinhood/"><b>Bookmarklet can be found here</b></a>
   <br><br>
 <i>Note: The intent of this project is not to circumvent any paywall or completely bypass any subscription, and should not be used as such. I already have a NYT subscribscription, though while using incognito browsers the log in doesn't save and requires a new sign in each time, this project aims to make my life a bit easier by addressing the lack of autofill issue with the NYT on incognito. Only those who have paid or are allowed access should/can use this client, no exceptions, and will otherwise be in violation of this softwares license.</i>
  
