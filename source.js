@@ -232,20 +232,47 @@ if (board) {
 }
 
 function moveToNextCell(currentRect) {
+    const ariaLabel = currentRect.getAttribute("aria-label");
+    const directionMatch = ariaLabel ? ariaLabel.match(/(\d+)([AD]):/) : null;
+    const direction = directionMatch ? directionMatch[2] : "A"; // default to Across
+
     const allCells = Array.from(document.querySelectorAll('g.xwd__cell rect.xwd__cell--cell'));
-    const currentIndex = allCells.indexOf(currentRect);
-    if (currentIndex >= 0 && currentIndex < allCells.length - 1) {
-        const nextCell = allCells[currentIndex + 1];
-        if (nextCell) {
-            document.querySelectorAll('rect.xwd__cell--selected').forEach(c => c.classList.remove('xwd__cell--selected'));
 
-            nextCell.classList.add('xwd__cell--selected');
-
-            const cellGroup = nextCell.closest('g.xwd__cell');
-            if (cellGroup) {
-                cellGroup.dispatchEvent(new Event('click', { bubbles: true }));
+    if (direction === "A") {
+        const currentIndex = allCells.indexOf(currentRect);
+        if (currentIndex >= 0 && currentIndex < allCells.length - 1) {
+            const nextCell = allCells[currentIndex + 1];
+            if (nextCell) {
+                selectCell(nextCell);
             }
         }
+    } else if (direction === "D") {
+        const curX = parseFloat(currentRect.getAttribute("x"));
+        const curY = parseFloat(currentRect.getAttribute("y"));
+
+        const colCells = allCells
+            .filter(cell => parseFloat(cell.getAttribute("x")) === curX)
+            .sort((a, b) => parseFloat(a.getAttribute("y")) - parseFloat(b.getAttribute("y")));
+
+        const curIndex = colCells.indexOf(currentRect);
+        if (curIndex >= 0 && curIndex < colCells.length - 1) {
+            const nextCell = colCells[curIndex + 1];
+            if (nextCell) {
+                selectCell(nextCell);
+            }
+        }
+    }
+}
+
+function selectCell(cell) {
+    document.querySelectorAll('rect.xwd__cell--selected')
+        .forEach(c => c.classList.remove('xwd__cell--selected'));
+
+    cell.classList.add('xwd__cell--selected');
+
+    const cellGroup = cell.closest('g.xwd__cell');
+    if (cellGroup) {
+        cellGroup.dispatchEvent(new Event('click', { bubbles: true }));
     }
 }
 
