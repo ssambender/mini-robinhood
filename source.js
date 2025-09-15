@@ -1,6 +1,7 @@
 let timerInterval = null;
 let seconds = 0;
 let minutes = 0;
+let puzzleCompleted = false;
 
 let correctAnswers = [];
 
@@ -70,6 +71,7 @@ function areAllSquaresFilled() {
 
                 if (allMatch) {
                     if (timerInterval) clearInterval(timerInterval);
+                    puzzleCompleted = true;
 
                     const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
                     const formattedMinutes = minutes < 10 ? `${minutes}` : minutes;
@@ -80,18 +82,19 @@ function areAllSquaresFilled() {
                         popup.style.top = '50%';
                         popup.style.left = '50%';
                         popup.style.transform = 'translate(-50%, -50%)';
-                        popup.style.width = '200px';
-                        popup.style.height = '200px';
-                        popup.style.backgroundColor = '#6493e6';
-                        popup.style.color = 'white';
+                        popup.style.backgroundColor = 'white';
+                        popup.style.color = 'black';
                         popup.style.display = 'flex';
                         popup.style.flexDirection = 'column';
                         popup.style.justifyContent = 'center';
                         popup.style.alignItems = 'center';
-                        popup.style.borderRadius = '8px';
                         popup.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
                         popup.style.fontFamily = 'sans-serif';
                         popup.style.zIndex = '9999';
+                        popup.style.border = 'solid 3px black';
+                        popup.style.fontWeight = 'bold';
+                        popup.style.padding = '100px 100px 50px 100px';
+                        popup.style.fontSize = '2em';
 
                         const msg1 = document.createElement('div');
                         msg1.textContent = 'Well done!';
@@ -99,10 +102,9 @@ function areAllSquaresFilled() {
                         msg2.textContent = `${formattedMinutes}:${formattedSeconds}`;
                         const btn = document.createElement('button');
                         btn.textContent = 'Close';
-                        btn.style.marginTop = '10px';
+                        btn.style.marginTop = '50px';
                         btn.style.padding = '5px 10px';
                         btn.style.border = 'none';
-                        btn.style.borderRadius = '4px';
                         btn.style.cursor = 'pointer';
 
                         btn.addEventListener('click', () => popup.remove());
@@ -120,27 +122,27 @@ function areAllSquaresFilled() {
                         popup.style.top = '50%';
                         popup.style.left = '50%';
                         popup.style.transform = 'translate(-50%, -50%)';
-                        popup.style.width = '200px';
-                        popup.style.height = '200px';
-                        popup.style.backgroundColor = '#6493e6';
-                        popup.style.color = 'white';
+                        popup.style.backgroundColor = 'white';
+                        popup.style.color = 'black';
                         popup.style.display = 'flex';
                         popup.style.flexDirection = 'column';
                         popup.style.justifyContent = 'center';
                         popup.style.alignItems = 'center';
-                        popup.style.borderRadius = '8px';
                         popup.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
                         popup.style.fontFamily = 'sans-serif';
                         popup.style.zIndex = '9999';
+                        popup.style.border = 'solid 3px black';
+                        popup.style.fontWeight = 'bold';
+                        popup.style.padding = '100px 100px 50px 100px';
+                        popup.style.fontSize = '2em';
 
                         const msg1 = document.createElement('div');
                         msg1.textContent = 'Not quite!';
                         const btn = document.createElement('button');
                         btn.textContent = 'Close';
-                        btn.style.marginTop = '10px';
+                        btn.style.marginTop = '50px';
                         btn.style.padding = '5px 10px';
                         btn.style.border = 'none';
-                        btn.style.borderRadius = '4px';
                         btn.style.cursor = 'pointer';
 
                         btn.addEventListener('click', () => popup.remove());
@@ -276,6 +278,8 @@ function selectCell(cell) {
 }
 
 document.addEventListener('keydown', (event) => {
+    if (puzzleCompleted) return;
+
     const key = event.key.toUpperCase();
     const isLetter = /^[A-Z]$/.test(key);
 
