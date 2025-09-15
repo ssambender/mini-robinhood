@@ -23,11 +23,9 @@ if (heading) {
 }
 
 const bylineDiv = document.querySelector('.xwd__details--byline');
-
 if (bylineDiv) {
     const newSpan = document.createElement('span');
     newSpan.textContent = 'Made Available by Sam Bender';
-
     bylineDiv.appendChild(newSpan);
 }
 
@@ -38,7 +36,6 @@ function areAllSquaresFilled() {
     allPlayableCells.forEach(cell => {
         const cellGroup = cell.closest('g.xwd__cell');
         const letterTextElement = cellGroup.querySelector('text[data-testid="cell-text"]:last-of-type');
-
         if (letterTextElement && letterTextElement.textContent.trim().length > 0) {
             filledCount++;
         }
@@ -72,14 +69,12 @@ function areAllSquaresFilled() {
                     guessedLetters.every((letter, idx) => letter.toUpperCase() === correctAnswers[idx].toUpperCase());
 
                 if (allMatch) {
-                    if (timerInterval) {
-                        clearInterval(timerInterval);
-                    }
+                    if (timerInterval) clearInterval(timerInterval);
 
                     const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
                     const formattedMinutes = minutes < 10 ? `${minutes}` : minutes;
 
-                    (function() {
+                    (function () {
                         const popup = document.createElement('div');
                         popup.style.position = 'fixed';
                         popup.style.top = '50%';
@@ -100,10 +95,8 @@ function areAllSquaresFilled() {
 
                         const msg1 = document.createElement('div');
                         msg1.textContent = 'Well done!';
-
                         const msg2 = document.createElement('div');
                         msg2.textContent = `${formattedMinutes}:${formattedSeconds}`;
-
                         const btn = document.createElement('button');
                         btn.textContent = 'Close';
                         btn.style.marginTop = '10px';
@@ -112,19 +105,16 @@ function areAllSquaresFilled() {
                         btn.style.borderRadius = '4px';
                         btn.style.cursor = 'pointer';
 
-                        btn.addEventListener('click', () => {
-                            popup.remove();
-                        });
+                        btn.addEventListener('click', () => popup.remove());
 
                         popup.appendChild(msg1);
                         popup.appendChild(msg2);
                         popup.appendChild(btn);
-
                         document.body.appendChild(popup);
                     })();
 
                 } else {
-                    (function() {
+                    (function () {
                         const popup = document.createElement('div');
                         popup.style.position = 'fixed';
                         popup.style.top = '50%';
@@ -145,7 +135,6 @@ function areAllSquaresFilled() {
 
                         const msg1 = document.createElement('div');
                         msg1.textContent = 'Not quite!';
-
                         const btn = document.createElement('button');
                         btn.textContent = 'Close';
                         btn.style.marginTop = '10px';
@@ -154,23 +143,19 @@ function areAllSquaresFilled() {
                         btn.style.borderRadius = '4px';
                         btn.style.cursor = 'pointer';
 
-                        btn.addEventListener('click', () => {
-                            popup.remove();
-                        });
-
+                        btn.addEventListener('click', () => popup.remove());
                         popup.appendChild(msg1);
                         popup.appendChild(btn);
-
                         document.body.appendChild(popup);
                     })();
                 }
+
             } catch (error) {
                 console.error('Error checking puzzle correctness:', error);
             }
         }
 
         checkPuzzleCorrect(guessedLetters);
-
         return true;
     }
     return false;
@@ -180,9 +165,9 @@ function updateHintBox(clueNumber, direction, clueText) {
     const hintbox = document.querySelector('.xwd__clue-bar-desktop--bar');
     if (hintbox) {
         const newContent = `
-      <div class="xwd__clue-bar-desktop--number">${clueNumber}${direction}</div>
-      <div class="xwd__clue-bar-desktop--text xwd__clue-format">${clueText}</div>
-    `;
+        <div class="xwd__clue-bar-desktop--number">${clueNumber}${direction}</div>
+        <div class="xwd__clue-bar-desktop--text xwd__clue-format">${clueText}</div>
+        `;
         hintbox.innerHTML = newContent;
     }
 }
@@ -199,18 +184,13 @@ span.textContent = 'Play';
 newButton.appendChild(span);
 
 const container = document.querySelector('.xwd__modal--button-container');
-if (container) {
-    container.prepend(newButton);
-}
+if (container) container.prepend(newButton);
 
 const subscribeButton = document.querySelector('.pz-moment__button[aria-label="Subscribe"]');
-if (subscribeButton) {
-    subscribeButton.remove();
-}
+if (subscribeButton) subscribeButton.remove();
+
 const loginButton = document.querySelector('.pz-moment__button[aria-label="Log in"]');
-if (loginButton) {
-    loginButton.remove();
-}
+if (loginButton) loginButton.remove();
 
 const clueListItems = document.querySelectorAll('li.xwd__clue--li');
 clueListItems.forEach(clue => {
@@ -251,13 +231,28 @@ if (board) {
     });
 }
 
+function moveToNextCell(currentRect) {
+    const allCells = Array.from(document.querySelectorAll('g.xwd__cell rect.xwd__cell--cell'));
+    const currentIndex = allCells.indexOf(currentRect);
+    if (currentIndex >= 0 && currentIndex < allCells.length - 1) {
+        const nextCell = allCells[currentIndex + 1];
+        if (nextCell) {
+            document.querySelectorAll('rect.xwd__cell--selected').forEach(c => c.classList.remove('xwd__cell--selected'));
+
+            nextCell.classList.add('xwd__cell--selected');
+
+            const cellGroup = nextCell.closest('g.xwd__cell');
+            if (cellGroup) {
+                cellGroup.dispatchEvent(new Event('click', { bubbles: true }));
+            }
+        }
+    }
+}
+
 document.addEventListener('keydown', (event) => {
     const key = event.key.toUpperCase();
     const isLetter = /^[A-Z]$/.test(key);
-
-    if (!isLetter) {
-        return;
-    }
+    if (!isLetter) return;
 
     const selectedCellRect = document.querySelector('rect.xwd__cell--selected');
 
@@ -267,31 +262,24 @@ document.addEventListener('keydown', (event) => {
 
         if (letterTextElement) {
             const hiddenText = letterTextElement.querySelector('.xwd__cell--hidden');
-            if (hiddenText) {
-                hiddenText.textContent = key;
-            }
+            if (hiddenText) hiddenText.textContent = key;
+
             letterTextElement.innerHTML = `<text class="xwd__cell--hidden" aria-live="polite">${key}</text>${key}`;
 
             areAllSquaresFilled();
+
+            moveToNextCell(selectedCellRect);
         }
     }
 });
 
 newButton.addEventListener('click', () => {
     document.querySelectorAll('.xwd__modal--wrapper').forEach(el => el.remove());
-
     const elements = document.querySelectorAll('.xwd__clue-list--obscured');
-    elements.forEach(el => {
-        el.classList.remove('xwd__clue-list--obscured');
-    });
+    elements.forEach(el => el.classList.remove('xwd__clue-list--obscured'));
 
     const modal = document.querySelector('.modal-system-container.start-modal-container');
-    if (modal) {
-        modal.remove();
-        console.log('Modal removed.');
-    } else {
-        console.log('Modal not found.');
-    }
+    if (modal) modal.remove();
 
     seconds = 0;
     minutes = 0;
@@ -304,9 +292,7 @@ newButton.addEventListener('click', () => {
         const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
         const formattedMinutes = minutes < 10 ? `${minutes}` : minutes;
         const timerElement = document.querySelector('.timer-count');
-        if (timerElement) {
-            timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
-        }
+        if (timerElement) timerElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
     }, 1000);
 
     const hintbox = document.querySelector('.xwd__clue-bar-desktop--bar');
@@ -316,12 +302,7 @@ newButton.addEventListener('click', () => {
     }
 
     const firstClue = document.querySelector('li.xwd__clue--li');
-    if (firstClue) {
-        firstClue.click();
-    }
+    if (firstClue) firstClue.click();
 
     fetchCorrectAnswers();
 });
-
-
-
